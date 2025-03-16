@@ -85,9 +85,7 @@
 
     <section class="contact">
         <h3>Contact Me</h3>
-        <a class="contact-button" href="mailto:miguerrero@miuandes.cl?subject=Contact%20from%20your%20webpage&body=Hello%20Mika!">
-            Write me an email
-        </a>
+        <button onclick="contactMe()">Write me an email</button>
     </section>
     
     <script>
@@ -97,9 +95,17 @@
         }
     
         function contactMe() {
-            window.location.href = 'mailto:miguerrero@miuandes.cl?subject=Contact%20from%20your%20webpage&body=Hello%20Mika!';
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+            if (isMobile) {
+                window.location.href = 'mailto:miguerrero@miuandes.cl';
+            } else {
+                
+                window.open('https://mail.google.com/mail/?view=cm&fs=1&to=miguerrero@miuandes.cl', '_blank');
+            }
         }
     </script>
+    
     
 </body>
 </html>
