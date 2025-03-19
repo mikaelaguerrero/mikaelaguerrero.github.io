@@ -5,16 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mikaela Guerrero - Personal Page</title>
     <link rel="stylesheet" href="style.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Mikaela Guerrero</h1>
-        <h2>Electrical Engineering Student</h2>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Mikaela</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#news-container">News</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#aboutAccordion">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="container text-center py-4">
+        <h1 class="display-4">Mikaela Guerrero</h1>
+        <h2 class="h4 text-primary">Electrical Engineering Student</h2>
         <p>Year of University Enrollment: 2022</p>
-        <a href="https://github.com/mikaelaguerrero" target="_blank">My GitHub Profile</a>
+        <a href="https://github.com/mikaelaguerrero" target="_blank" class="btn btn-outline-primary">My GitHub Profile</a>
     </header>
 
     <section class="image-section">
@@ -27,60 +44,70 @@
         <p>I am a fourth-year Electrical Civil Engineering student at Universidad de los Andes. I am interested in energy, technology, and innovative solutions. In my free time, I enjoy drawing, painting, going for walks, and watching series.</p>
     </section>
 
-    <section class="skills">
-        <h3>My Skills</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Skill</th>
-                    <th>Level</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Python</td>
-                    <td>Advanced</td>
-                </tr>
-                <tr>
-                    <td>JavaScript</td>
-                    <td>Basic</td>
-                </tr>
-                <tr>
-                    <td>HTML/CSS</td>
-                    <td>Basic</td>
-                </tr>
-                <tr>
-                    <td>Git</td>
-                    <td>Basic</td>
-                </tr>
-                <tr>
-                    <td>Excel</td>
-                    <td>Advanced</td>
-                </tr>
-                <tr>
-                    <td>SQL</td>
-                    <td>Intermediate</td>
-                </tr>
-                <tr>
-                    <td>Ruby</td>
-                    <td>Beginner</td>
-                </tr>
-                <tr>
-                    <td>English</td>
-                    <td>Advanced</td>
-                </tr>
-                <tr>
-                    <td>Spanish</td>
-                    <td>Native</td>
-                </tr>
-            </tbody>
-        </table>
+    <section class="container skills" id="skills">
+        <h3 class="mb-3">My Skills</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-group">
+                    <li class="list-group-item">Python - Advanced</li>
+                    <li class="list-group-item">JavaScript - Basic</li>
+                    <li class="list-group-item">HTML/CSS - Basic</li>
+                    <li class="list-group-item">Git - Basic</li>
+                    <li class="list-group-item">Excel - Advanced</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group">
+                    <li class="list-group-item">MatLab - Intermediate</li>
+                    <li class="list-group-item">SQL - Intermediate</li>
+                    <li class="list-group-item">Ruby - Beginner</li>
+                    <li class="list-group-item">English - Advanced</li>
+                    <li class="list-group-item">Spanish - Native</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
     <section class="interactive">
         <h3>Change the Quote Below the Image</h3>
         <input type="text" id="quoteInput" placeholder="Enter your favorite quote">
         <button onclick="changeQuote()">Change Quote</button>
+    </section>
+
+    <section class="container my-5">
+        <h3 class="text-center mb-4">Latest News</h3>
+        <div id="news-container" class="row g-3">
+        </div>
+    </section>
+
+    <section class="container my-5" id="aboutAccordion">
+        <h3>More About Me</h3>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                        Hobbies
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                        Drawing, painting, walking, and watching series!
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                        Favorite Tech Areas
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        Energy innovation, AI for energy, and sustainable technology.
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section class="contact">
@@ -96,13 +123,50 @@
     
         function contactMe() {
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    
             if (isMobile) {
                 window.location.href = 'mailto:miguerrero@miuandes.cl';
             } else {
-                
                 window.open('https://mail.google.com/mail/?view=cm&fs=1&to=miguerrero@miuandes.cl', '_blank');
             }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchNews();
+        });
+    
+        function fetchNews() {
+            const apiKey = '52eb681d1c2d4f829a9410b75b96313b';
+            const category = 'technology';
+            const url = `https://newsapi.org/v2/top-headlines?category=${category}&apiKey=${apiKey}&pageSize=10`;
+    
+            fetch(url)
+                .then(response => response.json())
+                .then(data => displayNews(data.articles))
+                .catch(error => console.error('Error fetching news:', error));
+        }
+    
+        function displayNews(articles) {
+            const container = document.getElementById('news-container');
+            container.innerHTML = '';
+    
+            articles.forEach(article => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6 col-lg-4';
+    
+                col.innerHTML = `
+                    <div class="card h-100">
+                        <img src="${article.urlToImage || 'https://via.placeholder.com/150'}" class="card-img-top" alt="News image">
+                        <div class="card-body">
+                            <h5 class="card-title">${article.title}</h5>
+                            <p class="card-text">${article.description || ''}</p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            Source: ${article.source.name}
+                            <a href="${article.url}" target="_blank" class="btn btn-sm btn-primary d-block mt-2">Read more</a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
         }
     </script>
     
