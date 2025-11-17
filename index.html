@@ -1,175 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mikaela Guerrero - Personal Page</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NurseBand · Estación de Enfermería</title>
+  <style>
+    :root { --bg:#0f172a; --card:#111827; --ink:#e5e7eb; --muted:#9ca3af; }
+    body { margin:0; font-family:system-ui,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--ink); }
+    header { padding:24px; border-bottom:1px solid #1f2937; display:flex; justify-content:space-between; align-items:center; }
+    .title { font-size:20px; font-weight:700; }
+    .sub { color:var(--muted); font-size:12px; }
+    main { max-width:1100px; margin:24px auto; padding:0 16px; }
+    .card { background:var(--card); border:1px solid #1f2937; border-radius:16px; padding:16px; box-shadow: 0 10px 20px rgba(0,0,0,.15); }
+    .controls { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+    input[type="text"] { background:#0b1220; color:var(--ink); border:1px solid #243045; padding:10px 12px; border-radius:10px; outline:none; }
+    button { background:#2563eb; color:white; border:none; padding:10px 14px; border-radius:10px; cursor:pointer; }
+    button:disabled { opacity:.6; cursor:not-allowed; }
+    table { width:100%; border-collapse:collapse; margin-top:8px; }
+    th, td { text-align:left; padding:10px; border-bottom:1px solid #1f2937; font-size:14px; }
+    th { color:#9fb3d1; font-weight:600; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; background:#ef4444; color:white; }
+    .pill { padding:2px 8px; border:1px solid #334155; border-radius:999px; color:#cbd5e1; }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    footer { color:#6b7280; font-size:12px; text-align:center; padding:24px; }
+  </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Mikaela</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#news-container">News</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#aboutAccordion">About</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <header>
+    <div>
+      <div class="title">NurseBand · Estación de Enfermería</div>
+      <div class="sub">Alertas de ayuda en tiempo real + ficha del paciente</div>
+    </div>
+    <div class="sub">Auto-refresh 5 s</div>
+  </header>
 
-    <header class="container text-center py-4">
-        <h1 class="display-4">Mikaela Guerrero</h1>
-        <h2 class="h4 text-primary">Electrical Engineering Student</h2>
-        <p>Year of University Enrollment: 2022</p>
-        <a href="https://github.com/mikaelaguerrero" target="_blank" class="btn btn-outline-primary">My GitHub Profile</a>
-    </header>
+  <main>
+    <section class="card">
+      <div class="controls">
+        <input id="filtro" type="text" placeholder="Filtrar por paciente..." />
+        <button id="btnRecargar">Actualizar</button>
 
-    <section class="image-section">
-        <img src="example_web_tech.jpg" alt="Sailing boats on the ocean">
-        <blockquote id="quote">"Simplicity is the ultimate sophistication."</blockquote>
+        <!-- Input + botón del Lab -->
+        <input id="pacSim" type="text" placeholder="Simular: nombre paciente" />
+        <button id="btnSimular">Simular petición</button>
+        <span id="simMsg" class="pill">Listo para simular</span>
+      </div>
+
+      <div id="resumen" class="sub"></div>
+
+      <table id="tabla">
+        <thead>
+          <tr>
+            <th>Hora</th><th>Evento</th><th>N°</th><th>Paciente</th>
+            <th>Pulso</th><th>SpO₂</th><th>Ficha</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </section>
 
-    <section class="summary">
-        <h3>Personal Summary</h3>
-        <p>I am a fourth-year Electrical Civil Engineering student at Universidad de los Andes. I am interested in energy, technology, and innovative solutions. In my free time, I enjoy drawing, painting, going for walks, and watching series.</p>
-    </section>
+    <footer>NurseBand · Proyecto de Diseño Eléctrico — Dashboard simple en GitHub Pages.</footer>
+  </main>
 
-    <section class="container skills" id="skills">
-        <h3 class="mb-3">My Skills</h3>
-        <div class="row">
-            <div class="col-md-6">
-                <ul class="list-group">
-                    <li class="list-group-item">Python - Advanced</li>
-                    <li class="list-group-item">JavaScript - Basic</li>
-                    <li class="list-group-item">HTML/CSS - Basic</li>
-                    <li class="list-group-item">Git - Basic</li>
-                    <li class="list-group-item">Excel - Advanced</li>
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <ul class="list-group">
-                    <li class="list-group-item">MatLab - Intermediate</li>
-                    <li class="list-group-item">SQL - Intermediate</li>
-                    <li class="list-group-item">Ruby - Beginner</li>
-                    <li class="list-group-item">English - Advanced</li>
-                    <li class="list-group-item">Spanish - Native</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+  <script>
+    // ======= TODO: completa estos dos =======
+    const SHEET_ID = 'PON_AQUI_EL_ID_DE_TU_SHEET';
+    const APPS_SCRIPT_URL = 'PON_AQUI_TU_URL_EXEC';
+    // ========================================
 
-    <section class="interactive">
-        <h3>Change the Quote Below the Image</h3>
-        <input type="text" id="quoteInput" placeholder="Enter your favorite quote">
-        <button onclick="changeQuote()">Change Quote</button>
-    </section>
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
 
-    <section class="container my-5">
-        <h3 class="text-center mb-4">Latest News</h3>
-        <div id="news-container" class="row g-3">
-        </div>
-    </section>
+    const $tbody = document.querySelector('#tabla tbody');
+    const $resumen = document.querySelector('#resumen');
+    const $filtro = document.querySelector('#filtro');
+    const $btnRec = document.querySelector('#btnRecargar');
+    const $btnSim = document.querySelector('#btnSimular');
+    const $pacSim = document.querySelector('#pacSim');
+    const $simMsg = document.querySelector('#simMsg');
 
-    <section class="container my-5" id="aboutAccordion">
-        <h3>More About Me</h3>
-        <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                        Hobbies
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show">
-                    <div class="accordion-body">
-                        Drawing, painting, walking, and watching series!
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-                        Favorite Tech Areas
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                        Energy innovation, AI for energy, and sustainable technology.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    let rawRows = [];
 
-    <section class="contact">
-        <h3>Contact Me</h3>
-        <button onclick="contactMe()">Write me an email</button>
-    </section>
-    
-    <script>
-        function changeQuote() {
-            const input = document.getElementById('quoteInput').value;
-            document.getElementById('quote').innerText = input || "Simplicity is the ultimate sophistication.";
-        }
-    
-        function contactMe() {
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            if (isMobile) {
-                window.location.href = 'mailto:miguerrero@miuandes.cl';
-            } else {
-                window.open('https://mail.google.com/mail/?view=cm&fs=1&to=miguerrero@miuandes.cl', '_blank');
-            }
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchNews();
-        });
-    
-        function fetchNews() {
-            const apiKey = '52eb681d1c2d4f829a9410b75b96313b';
-            const category = 'technology';
-            const url = `https://newsapi.org/v2/top-headlines?category=${category}&apiKey=${apiKey}&pageSize=10`;
-    
-            fetch(url)
-                .then(response => response.json())
-                .then(data => displayNews(data.articles))
-                .catch(error => console.error('Error fetching news:', error));
-        }
-    
-        function displayNews(articles) {
-            const container = document.getElementById('news-container');
-            container.innerHTML = '';
-    
-            articles.forEach(article => {
-                const col = document.createElement('div');
-                col.className = 'col-md-6 col-lg-4';
-    
-                col.innerHTML = `
-                    <div class="card h-100">
-                        <img src="${article.urlToImage || 'https://via.placeholder.com/150'}" class="card-img-top" alt="News image">
-                        <div class="card-body">
-                            <h5 class="card-title">${article.title}</h5>
-                            <p class="card-text">${article.description || ''}</p>
-                        </div>
-                        <div class="card-footer text-muted">
-                            Source: ${article.source.name}
-                            <a href="${article.url}" target="_blank" class="btn btn-sm btn-primary d-block mt-2">Read more</a>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(col);
-            });
-        }
-    </script>
-    
-    
+    async function fetchCSV() {
+      const res = await fetch(CSV_URL, { cache:'no-store' });
+      const text = await res.text();
+      return parseCSV(text);
+    }
+
+    function parseCSV(text) {
+      const lines = text.split(/\r?\n/).filter(Boolean);
+      lines.shift(); // quita encabezados
+      return lines.map(splitCSV).map(cols => ({
+        ts: cols[0], evento: cols[1], n: cols[2], paciente: cols[3],
+        pulso: cols[4], spo2: cols[5], ficha: cols[6],
+      }));
+    }
+
+    function splitCSV(line) {
+      const out=[]; let cur='', inQ=false;
+      for (let i=0;i<line.length;i++){
+        const ch=line[i];
+        if (ch === '"'){ inQ=!inQ; continue; }
+        if (ch === ',' && !inQ){ out.push(cur); cur=''; continue; }
+        cur += ch;
+      }
+      out.push(cur);
+      return out.map(x=>x.replace(/^"(.*)"$/,'$1'));
+    }
+
+    function render(rows) {
+      rows.sort((a,b)=> new Date(b.ts) - new Date(a.ts));
+      const filtro = ($filtro.value||'').toLowerCase();
+      const fil = filtro? rows.filter(r => (r.paciente||'').toLowerCase().includes(filtro)) : rows;
+      $tbody.innerHTML = fil.map(r => `
+        <tr>
+          <td>${fmtTS(r.ts)}</td>
+          <td><span class="badge">${r.evento||'Ayuda'}</span></td>
+          <td>${r.n||''}</td>
+          <td>${r.paciente||''}</td>
+          <td>${r.pulso||''}</td>
+          <td>${r.spo2||''}</td>
+          <td>${r.ficha? `<a href="${r.ficha}" target="_blank" rel="noopener">Ver ficha</a>`:''}</td>
+        </tr>`).join('');
+      $resumen.textContent = `Registros: ${rows.length} · Mostrando: ${fil.length}`;
+    }
+
+    function fmtTS(ts){
+      const d = new Date(ts);
+      return isNaN(d)? ts : d.toLocaleString('es-CL');
+    }
+
+    async function cargar(){
+      try{ rawRows = await fetchCSV(); render(rawRows); }
+      catch{ $resumen.textContent = 'No se pudo leer la Sheet (¿permiso público y ID correctos?)'; }
+    }
+
+    $btnRec.addEventListener('click', cargar);
+    $filtro.addEventListener('input', ()=>render(rawRows));
+
+    $btnSim.addEventListener('click', async ()=>{
+      const nombre = $pacSim.value.trim() || 'Paciente demo';
+      $btnSim.disabled = true; $simMsg.textContent = `Enviando ayuda para ${nombre}…`;
+      try{
+        const url = `${APPS_SCRIPT_URL}?action=alert&paciente=${encodeURIComponent(nombre)}&pulso=85&spo2=97&ficha=${encodeURIComponent('https://docs.google.com/document/d/TU_DOC')}`;
+        const r = await fetch(url);
+        const j = await r.json();
+        if (j.ok){ $simMsg.textContent = `Enviado ✔ N° ${j.appended?.n ?? ''}`; await cargar(); }
+        else { $simMsg.textContent = `Error: ${j.error || 'desconocido'}`; }
+      }catch{ $simMsg.textContent = 'Fallo de red'; }
+      finally{ $btnSim.disabled = false; }
+    });
+
+    setInterval(cargar, 5000);
+    cargar();
+  </script>
 </body>
 </html>
