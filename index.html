@@ -142,7 +142,7 @@
       const nombre = $pacSim.value.trim() || 'Paciente demo';
       $btnSim.disabled = true; $simMsg.textContent = `Enviando ayuda para ${nombre}…`;
       try{
-        const url = `${APPS_SCRIPT_URL}?action=alert&paciente=${encodeURIComponent(nombre)}&pulso=85&spo2=97&ficha=${encodeURIComponent('https://docs.google.com/document/d/TU_DOC')}`;
+        const url = `${APPS_SCRIPT_URL}?action=alert&paciente=${encodeURIComponent(nombre)}&pulso=85&spo2=97&ficha=${encodeURIComponent('https://docs.google.com/document/d/1GwianCdCedHIRTanA8lG_UlOnH-ujFAvtjvG2OQ88LY/edit?usp=sharing')}`;
         const r = await fetch(url);
         const j = await r.json();
         if (j.ok){ $simMsg.textContent = `Enviado ✔ N° ${j.appended?.n ?? ''}`; await cargar(); }
