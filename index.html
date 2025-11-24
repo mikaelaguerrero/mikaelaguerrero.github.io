@@ -131,9 +131,25 @@
     }
 
     async function cargar(){
-      try{ rawRows = await fetchCSV(); render(rawRows); }
-      catch{ $resumen.textContent = 'No se pudo leer la Sheet (¿permiso público y ID correctos?)'; }
+      try{
+        rawRows = await fetchCSV();
+      
+        // Limpia filas vacías reales
+        rawRows = rawRows.filter(r => r.ts && r.paciente);
+      
+        // Ordena de más nuevo a más antiguo SIEMPRE
+        rawRows.sort((a,b)=> new Date(b.ts) - new Date(a.ts));
+      
+        render(rawRows);
+      }
+      catch{
+        $resumen.textContent = 'No se pudo leer la Sheet (¿permiso público y ID correctos?)';
+      }
     }
+          
+      
+        
+
 
     $btnRec.addEventListener('click', cargar);
     $filtro.addEventListener('input', ()=>render(rawRows));
