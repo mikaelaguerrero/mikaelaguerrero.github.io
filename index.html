@@ -20,7 +20,6 @@
     th, td { text-align:left; padding:10px; border-bottom:1px solid #1f2937; font-size:14px; }
     th { color:#9fb3d1; font-weight:600; }
     .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; background:#ef4444; color:white; }
-    .pill { padding:2px 8px; border:1px solid #334155; border-radius:999px; color:#cbd5e1; }
     a { color:#93c5fd; text-decoration:none; }
     a:hover { text-decoration:underline; }
     footer { color:#6b7280; font-size:12px; text-align:center; padding:24px; }
@@ -40,11 +39,6 @@
       <div class="controls">
         <input id="filtro" type="text" placeholder="Filtrar por paciente..." />
         <button id="btnRecargar">Actualizar</button>
-
-        <!-- Input + botón del Lab -->
-        <input id="pacSim" type="text" placeholder="Simular: nombre paciente" />
-        <button id="btnSimular">Simular petición</button>
-        <span id="simMsg" class="pill">Listo para simular</span>
       </div>
 
       <div id="resumen" class="sub"></div>
@@ -64,10 +58,11 @@
   </main>
 
   <script>
-    // ======= TODO: completa estos dos =======
+    // ======= IDs / URLs =======
     const SHEET_ID = '1QO_2UFW26rbaXD79sc9gB1q1qKZDxpD9ctnj6GWuoq4';
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwmnggZnGz27FHQhBp83UYDnQkhEFD8xpOyI0NdA8bxG4Xb5pVNKEZR46xQ6xw3ewTM/exec';
-    // ========================================
+    // APPS_SCRIPT_URL ya no se usa aquí, solo lo usa la pulsera
+    // const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwmnggZnGz27FHQhBp83UYDnQkhEFD8xpOyI0NdA8bxG4Xb5pVNKEZR46xQ6xw3ewTM/exec';
+    // ===========================
 
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
 
@@ -75,9 +70,6 @@
     const $resumen = document.querySelector('#resumen');
     const $filtro = document.querySelector('#filtro');
     const $btnRec = document.querySelector('#btnRecargar');
-    const $btnSim = document.querySelector('#btnSimular');
-    const $pacSim = document.querySelector('#pacSim');
-    const $simMsg = document.querySelector('#simMsg');
 
     let rawRows = [];
 
@@ -108,64 +100,70 @@
       return out.map(x=>x.replace(/^"(.*)"$/,'$1'));
     }
 
-    function render(rows) {
-      rows.sort((a,b)=> new Date(b.ts) - new Date(a.ts));
-      const filtro = ($filtro.value||'').toLowerCase();
-      const fil = filtro? rows.filter(r => (r.paciente||'').toLowerCase().includes(filtro)) : rows;
-      $tbody.innerHTML = fil.map(r => `
-        <tr>
-          <td>${fmtTS(r.ts)}</td>
-          <td><span class="badge">${r.evento||'Ayuda'}</span></td>
-          <td>${r.n||''}</td>
-          <td>${r.paciente||''}</td>
-          <td>${r.pulso||''}</td>
-          <td>${r.spo2||''}</td>
-          <td>${r.ficha? `<a href="${r.ficha}" target="_blank" rel="noopener">Ver ficha</a>`:''}</td>
-        </tr>`).join('');
-      $resumen.textContent = `Registros: ${rows.length} · Mostrando: ${fil.length}`;
+    // ts viene como "17/11/2025 9:19:00" (dd/mm/yyyy hh:mm:ss)
+    function parseTS(ts){
+      if (!ts) return null;
+      const [datePart, timePart] = ts.split(' ');
+      if (!datePart) return null;
+      const [d,m,y] = datePart.split('/');
+      if (!d || !m || !y) return null;
+      // Construimos un string ISO para que Date lo entienda bien
+      const iso = `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}T${(timePart || '00:00:00')}`;
+      const dObj = new Date(iso);
+      return isNaN(dObj) ? null : dObj;
     }
 
     function fmtTS(ts){
-      const d = new Date(ts);
-      return isNaN(d)? ts : d.toLocaleString('es-CL');
+      const d = parseTS(ts);
+      return d ? d.toLocaleString('es-CL') : ts;
+    }
+
+    function render(rows) {
+      // Ordenar SIEMPRE de más nuevo a más antiguo
+      rows.sort((a,b)=>{
+        const da = parseTS(a.ts);
+        const db = parseTS(b.ts);
+        if (!da && !db) return 0;
+        if (!da) return 1;
+        if (!db) return -1;
+        return db - da;
+      });
+
+      const filtro = ($filtro.value||'').toLowerCase();
+      const fil = filtro
+        ? rows.filter(r => (r.paciente||'').toLowerCase().includes(filtro))
+        : rows;
+
+      $tbody.innerHTML = fil.map(r => `
+        <tr>
+          <td>${fmtTS(r.ts)}</td>
+          <td><span class="badge">${r.evento || 'Ayuda'}</span></td>
+          <td>${r.n || ''}</td>
+          <td>${r.paciente || ''}</td>
+          <td>${r.pulso || ''}</td>
+          <td>${r.spo2 || ''}</td>
+          <td>${r.ficha ? `<a href="${r.ficha}" target="_blank" rel="noopener">Ver ficha</a>` : ''}</td>
+        </tr>`).join('');
+
+      $resumen.textContent = `Registros: ${rows.length} · Mostrando: ${fil.length}`;
     }
 
     async function cargar(){
       try{
         rawRows = await fetchCSV();
-      
-        // Limpia filas vacías reales
+
+        // Quitar filas vacías de verdad
         rawRows = rawRows.filter(r => r.ts && r.paciente);
-      
-        // Ordena de más nuevo a más antiguo SIEMPRE
-        rawRows.sort((a,b)=> new Date(b.ts) - new Date(a.ts));
-      
+
         render(rawRows);
       }
       catch{
         $resumen.textContent = 'No se pudo leer la Sheet (¿permiso público y ID correctos?)';
       }
     }
-          
-      
-        
-
 
     $btnRec.addEventListener('click', cargar);
     $filtro.addEventListener('input', ()=>render(rawRows));
-
-    $btnSim.addEventListener('click', async ()=>{
-      const nombre = $pacSim.value.trim() || 'Paciente demo';
-      $btnSim.disabled = true; $simMsg.textContent = `Enviando ayuda para ${nombre}…`;
-      try{
-        const url = `${APPS_SCRIPT_URL}?action=alert&paciente=${encodeURIComponent(nombre)}&pulso=85&spo2=97&ficha=${encodeURIComponent('https://docs.google.com/document/d/1GwianCdCedHIRTanA8lG_UlOnH-ujFAvtjvG2OQ88LY/edit?usp=sharing')}`;
-        const r = await fetch(url);
-        const j = await r.json();
-        if (j.ok){ $simMsg.textContent = `Enviado ✔ N° ${j.appended?.n ?? ''}`; await cargar(); }
-        else { $simMsg.textContent = `Error: ${j.error || 'desconocido'}`; }
-      }catch{ $simMsg.textContent = 'Fallo de red'; }
-      finally{ $btnSim.disabled = false; }
-    });
 
     setInterval(cargar, 5000);
     cargar();
